@@ -109,6 +109,9 @@ class ClosedLoop:
             positions[t] = self.plant.get_position()
             observation_t = self.plant.get_depth()
             # Call your controller here
+            reference_t = mission.reference[t]
+            actions[t] = self.controller.compute(reference_t, observation_t)
+            # Advance the plant state
             self.plant.transition(actions[t], disturbances[t])
 
         return Trajectory(positions)
